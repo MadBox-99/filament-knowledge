@@ -56,7 +56,7 @@ class KnowledgeArticleResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state ?? ''))),
+                                    ->afterStateUpdated(fn (Set $set, ?string $state): mixed => $set('slug', Str::slug($state ?? ''))),
                                 Forms\Components\TextInput::make('slug')
                                     ->label('URL Slug')
                                     ->required()
@@ -142,7 +142,7 @@ class KnowledgeArticleResource extends Resource
                         ->helperText('Optional, valid JSON. Rendered in addition to the automatic structured data.')
                         ->rules(['nullable', 'json'])
                         ->formatStateUsing(fn ($state): ?string => is_array($state) ? json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $state)
-                        ->dehydrateStateUsing(fn (?string $state) => filled($state) ? json_decode($state, true) : null),
+                        ->dehydrateStateUsing(fn (?string $state): mixed => filled($state) ? json_decode($state, true) : null),
                 ]),
         ];
     }
